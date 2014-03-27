@@ -25,7 +25,10 @@ module Comma
     private
 
     def append_csv(csv, iterator_method)
-      return '' if @instance.empty?
+      # FIXME: temp workaround for Rails 4.1 making .empty? incompatible with select narrows e.g. #select('authors.*')
+      # return '' if @instance.empty?
+      return '' if @instance.first.nil?
+
       unless @options.has_key?(:write_headers) && !@options[:write_headers]
         csv << @instance.first.to_comma_headers(@style)
       end
